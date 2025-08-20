@@ -96,15 +96,13 @@ Note: The `.msc` extension is only required if launching via the Run menu
 
 Command Prompt reference: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands
 
-## Command Prompt
+## Deprecated
 
-- `doskey` (*Edits command lines, recalls Windows commands, and creates macros*)
-  - `doskey /history` to see command history
-- `<command> >nul 2>&1` to redirect `stdout` and `stderr` to `nul`
-- `echo %ERRORLEVEL%`
-- `if errorlevel 1 echo ERROR` to print `ERROR` if the last `%ERRORLEVEL%`>=`1`
+- `wmic` (Windows Management Instrumentation Command-line; **deprecated since `10.0.19043`**)
 
 ## General
+
+### Misc
 
 - `help <command>` (*Provides help information for Windows commands*)
 - `findstr` (*Searches for patterns of text in files*)
@@ -116,11 +114,7 @@ Command Prompt reference: https://learn.microsoft.com/en-us/windows-server/admin
 - `curl` (since `10.0.17063`)
   - `curl --help`
 
-## Deprecated
-
-- `wmic` (Windows Management Instrumentation Command-line; **deprecated since `10.0.19043`**)
-
-## Starting Processes
+### Starting a Process
 
 - `start` (*Starts a separate Command Prompt window to run a specified program or command*)
   - `start "<title>" <program>`
@@ -133,54 +127,13 @@ Command Prompt reference: https://learn.microsoft.com/en-us/windows-server/admin
   - `cmd /c <program>` (*Carries out the command specified by <string> and then exits the command processor*)
   - `cmd /k <program>` (*Carries out the command specified by <string> and keeps the command processor running*)
 
-## Account Management
+### Command Prompt Scripting and Shell
 
-- `whoami` (*Shows information about the user, groups, and privileges for the account currently logged on to the local system*)
-  - `whoami` to show `domain\username`
-  - `whoami /all` to show information on the user, their groups, privileges, security IDs, and more
-  - `whoami /priv` to show the security privileges of the current user
-  - `whoami /groups` to show the group memberships of the current user
-- `net` to perform operations on groups, users, account policies, shares, and more
-  - `net session` to determine who's using resources on local computer
-  - `net user` (*Details, adds, modifies, or deletes user accounts*)
-    - `net user <username>` to see details of the user
-
-## Networking
-
-### Network Observability and Troubleshooting
-
-- `tracert` (*Traces the route to a destination*)
-- `pathping` (*Traces the route to a destination and calculates latency and loss between hops*)
-- `netstat` (*Displays active network connections and statistics*)
-  - `netstat 1` to run and refresh every 1 second
-  - `netstat -bao` to display all active/listening TCP and UDP connections/ports (`-a`), display executable names (`-b`), and display PIDs (`-o`)
-  - `netstat -r` to display routing table
-  - `netstat -e` to display Ethernet statistics
-
-### Network Management
-
-- `ipconfig` (*Displays network configuration and refreshes DHCP and DNS settings*)
-  - `/release` (*Releases the IPv4 address for the specified adapter*)
-  - `/renew` (*Renews the IPv4 address for the specified adapter*)
-  - `/flushdns` (*Purges the DNS Resolver cache*)
-  - `/registerdns` (*Refreshes all DHCP leases and re-registers DNS names*)
-- `netsh` (Network shell; *Displays and modifies network settings, automates tasks, and troubleshoots network issues locally or remotely*)
-  - Note: The netsh docs are very helpful: <https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netsh>
-  - `netsh` to start an interactive netsh session
-  - Wireless network information
-  - `netsh wlan show all` to show all wireless device and networks information
-  - Profiles
-    - `netsh wlan show profiles`
-    - `netsh wlan show profile "<profile-name>"`
-    - `key=clear` to display security key in plaintext
-  - Firewall
-    - `netsh advfirewall show allprofiles` to show all firewall profiles
-    - `netsh advfirewall firewall show rule name=all` to show all firewall rules
-    - `netsh advfirewall firewall add rule name="<firewall-rule-name>" action=allow localport=8080 protocol=TCP dir=in` to add a firewall rule to allow inbound TCP traffic to port 8080 on the local host
-    - `netsh advfirewall firewall show rule name="<firewall-rule-name>"` to show the firewall rule details
-    - `netsh advfirewall firewall delete rule name="<firewall-rule-name>"` to delete the firewall rule
-  - Port forwarding
-    - `netsh interface portproxy add v4tov4 listenaddress=<src-address> listenport=<src-port> connectaddress=<dst-address> connectport=<dst-port>` to add a persistent TCP ipv4-to-ipv4 `portproxy` rule to forward traffic received from local `<src-address>: <src-port>` to `<dst-address>:<dst-port>`
+- `doskey` (*Edits command lines, recalls Windows commands, and creates macros*)
+  - `doskey /history` to see command history
+- `<command> >nul 2>&1` to redirect `stdout` and `stderr` to `nul`
+- `echo %ERRORLEVEL%`
+- `if errorlevel 1 echo ERROR` to print `ERROR` if the last `%ERRORLEVEL%`>=`1`
 
 ## System Management
 
@@ -230,6 +183,21 @@ Command Prompt reference: https://learn.microsoft.com/en-us/windows-server/admin
   setx /M PATH "%NEW_PATH%"
   ```
 
+## Package Management (Winget)
+
+`winget` comes pre-installed as the default package manager since `10.0.17763`
+
+Winget documentation: <https://learn.microsoft.com/en-us/windows/package-manager/winget>
+
+---
+
+- `winget list` to list installed packages
+- `winget search <command>` to search for package candidates
+- `winget show <package>` to show details of package candidates
+- `winget install <package>` to install a package
+  - `--accept-package-agreements` to accept any license agreements, and avoid the prompt
+  - `--accept-source-agreements` to accept any source license agreements, and avoid the prompt
+
 ## Process Management
 
 - `tasklist` (*Displays a list of currently running processes on the local computer or on a remote computer*)
@@ -249,20 +217,54 @@ Command Prompt reference: https://learn.microsoft.com/en-us/windows-server/admin
     - `/f` to kill forcefully
     - `/t` to kill child processes along with parent
 
-## Package Management (Winget)
+## Account Management
 
-`winget` comes pre-installed as the default package manager since `10.0.17763`
+- `whoami` (*Shows information about the user, groups, and privileges for the account currently logged on to the local system*)
+  - `whoami` to show `domain\username`
+  - `whoami /all` to show information on the user, their groups, privileges, security IDs, and more
+  - `whoami /priv` to show the security privileges of the current user
+  - `whoami /groups` to show the group memberships of the current user
+- `net` to perform operations on groups, users, account policies, shares, and more
+  - `net session` to determine who's using resources on local computer
+  - `net user` (*Details, adds, modifies, or deletes user accounts*)
+    - `net user <username>` to see details of the user
 
-Winget documentation: <https://learn.microsoft.com/en-us/windows/package-manager/winget>
+## Networking
 
----
+### Network Observability and Troubleshooting
 
-- `winget list` to list installed packages
-- `winget search <command>` to search for package candidates
-- `winget show <package>` to show details of package candidates
-- `winget install <package>` to install a package
-  - `--accept-package-agreements` to accept any license agreements, and avoid the prompt
-  - `--accept-source-agreements` to accept any source license agreements, and avoid the prompt
+- `tracert` (*Traces the route to a destination*)
+- `pathping` (*Traces the route to a destination and calculates latency and loss between hops*)
+- `netstat` (*Displays active network connections and statistics*)
+  - `netstat 1` to run and refresh every 1 second
+  - `netstat -bao` to display all active/listening TCP and UDP connections/ports (`-a`), display executable names (`-b`), and display PIDs (`-o`)
+  - `netstat -r` to display routing table
+  - `netstat -e` to display Ethernet statistics
+
+### Network Management
+
+- `ipconfig` (*Displays network configuration and refreshes DHCP and DNS settings*)
+  - `/release` (*Releases the IPv4 address for the specified adapter*)
+  - `/renew` (*Renews the IPv4 address for the specified adapter*)
+  - `/flushdns` (*Purges the DNS Resolver cache*)
+  - `/registerdns` (*Refreshes all DHCP leases and re-registers DNS names*)
+- `netsh` (Network shell; *Displays and modifies network settings, automates tasks, and troubleshoots network issues locally or remotely*)
+  - Note: The netsh docs are very helpful: <https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netsh>
+  - `netsh` to start an interactive netsh session
+  - Wireless network information
+  - `netsh wlan show all` to show all wireless device and networks information
+  - Profiles
+    - `netsh wlan show profiles`
+    - `netsh wlan show profile "<profile-name>"`
+    - `key=clear` to display security key in plaintext
+  - Firewall
+    - `netsh advfirewall show allprofiles` to show all firewall profiles
+    - `netsh advfirewall firewall show rule name=all` to show all firewall rules
+    - `netsh advfirewall firewall add rule name="<firewall-rule-name>" action=allow localport=8080 protocol=TCP dir=in` to add a firewall rule to allow inbound TCP traffic to port 8080 on the local host
+    - `netsh advfirewall firewall show rule name="<firewall-rule-name>"` to show the firewall rule details
+    - `netsh advfirewall firewall delete rule name="<firewall-rule-name>"` to delete the firewall rule
+  - Port forwarding
+    - `netsh interface portproxy add v4tov4 listenaddress=<src-address> listenport=<src-port> connectaddress=<dst-address> connectport=<dst-port>` to add a persistent TCP ipv4-to-ipv4 `portproxy` rule to forward traffic received from local `<src-address>: <src-port>` to `<dst-address>:<dst-port>`
 
 ## Tasks
 
