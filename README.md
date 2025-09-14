@@ -12,6 +12,7 @@ My personal Windows system administration reference
 - [System32 / Command Prompt](#system32--command-prompt)
 - [External Utilities](#external-utilities)
   - [Sysinternals](#sysinternals)
+- [Other](#other)
 
 # Resources
 
@@ -254,13 +255,18 @@ Winget documentation: <https://learn.microsoft.com/en-us/windows/package-manager
   - Wireless network information
   - `netsh wlan show all` to show all wireless device and networks information
   - Profiles
-    - `netsh wlan show profiles`
-    - `netsh wlan show profile "<profile-name>"`
+    - `netsh wlan show profile` to list stored profiles
+    - `netsh wlan show profile *` to show details for all profiles
+    - `netsh wlan show profile "<profile-name>"` to show details for the profile
     - `key=clear` to display security key in plaintext
   - Firewall
     - `netsh advfirewall show allprofiles` to show all firewall profiles
     - `netsh advfirewall firewall show rule name=all` to show all firewall rules
-    - `netsh advfirewall firewall add rule name="<firewall-rule-name>" action=allow localport=8080 protocol=TCP dir=in` to add a firewall rule to allow inbound TCP traffic to port 8080 on the local host
+    - Add
+      - `remoteip=<ip>`
+      - `program=<path>`
+      - `name=<firewall-rule-name>`
+      - Example: `netsh advfirewall firewall add rule name="<firewall-rule-name>" action=allow localport=8080 protocol=TCP dir=in` to add a firewall rule to allow inbound TCP traffic to port 8080 on the local host
     - `netsh advfirewall firewall show rule name="<firewall-rule-name>"` to show the firewall rule details
     - `netsh advfirewall firewall delete rule name="<firewall-rule-name>"` to delete the firewall rule
   - Port forwarding
@@ -300,3 +306,15 @@ Winget documentation: <https://learn.microsoft.com/en-us/windows/package-manager
   - `-a` to show all endpoints
   - `-n` to not resolve addresses
 
+# Other
+
+## Visual Studio Utilities
+
+- `dumpbin` (*Microsoft COFF/PE Dumper*)
+  - `/summary`
+  - `/all`
+  - `/disasm`
+  - `/rawdata` (hex dump)
+  - `/headers`
+  - `/symbols`
+  - `/exports`
