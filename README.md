@@ -141,6 +141,9 @@ Command Prompt reference: https://learn.microsoft.com/en-us/windows-server/admin
 ### Misc
 
 - `sc` (*Interface to Service Control Manager and services*)
+- `fltmc` (*Manage MiniFilter drivers*)
+  - See minifilter documentation <https://learn.microsoft.com/en-us/windows-hardware/drivers/ifs/about-file-system-filter-drivers>
+  - `fltmc [filters]` to list loaded minifilters
 
 ### System Information
 
@@ -247,8 +250,9 @@ Winget documentation: <https://learn.microsoft.com/en-us/windows/package-manager
 - `ipconfig` (*Displays network configuration and refreshes DHCP and DNS settings*)
   - `/release` (*Releases the IPv4 address for the specified adapter*)
   - `/renew` (*Renews the IPv4 address for the specified adapter*)
-  - `/flushdns` (*Purges the DNS Resolver cache*)
+  - `/flushdns` (*Purges the DNS resolver cache*)
   - `/registerdns` (*Refreshes all DHCP leases and re-registers DNS names*)
+  - `/displaydns`
 - `netsh` (Network shell; *Displays and modifies network settings, automates tasks, and troubleshoots network issues locally or remotely*)
   - Note: The netsh docs are very helpful: <https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netsh>
   - `netsh` to start an interactive netsh session
@@ -269,6 +273,11 @@ Winget documentation: <https://learn.microsoft.com/en-us/windows/package-manager
       - Example: `netsh advfirewall firewall add rule name="<firewall-rule-name>" action=allow localport=8080 protocol=TCP dir=in` to add a firewall rule to allow inbound TCP traffic to port 8080 on the local host
     - `netsh advfirewall firewall show rule name="<firewall-rule-name>"` to show the firewall rule details
     - `netsh advfirewall firewall delete rule name="<firewall-rule-name>"` to delete the firewall rule
+  - Interfaces
+    - `netsh interface ip show config` to list interfaces' configurations
+    - `netsh interface show interface [interface]` to list interfaces and their states
+    - `netsh interface set interface <interface> [admin=]<enabled|disabled>` to enable/disable an interface
+    - `netsh interface ip set address <interface> <static [address] | dhcp | source=<dhcp|static> [static-address]>` to set address source and address
   - Port forwarding
     - `netsh interface portproxy add v4tov4 listenaddress=<src-address> listenport=<src-port> connectaddress=<dst-address> connectport=<dst-port>` to add a persistent TCP ipv4-to-ipv4 `portproxy` rule to forward traffic received from local `<src-address>: <src-port>` to `<dst-address>:<dst-port>`
 
