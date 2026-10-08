@@ -119,7 +119,7 @@ Command Prompt reference: https://learn.microsoft.com/en-us/windows-server/admin
 
 - `start` (*Starts a separate Command Prompt window to run a specified program or command*)
   - `start "<title>" <program>`
-  - `"<title>"` (required) to set the new Command Prompt window title
+  - `"<title>"` to set the new Command Prompt window title
   - `/wait` to block parent batch program until finished
 - `call` (*Calls one batch program from another without stopping the parent batch program*)
   - `call <program>`
